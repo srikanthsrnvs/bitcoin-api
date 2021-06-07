@@ -2,8 +2,8 @@ const dotenv = require("dotenv");
 const fetch = require('node-fetch');
 dotenv.config();
 
-const USER = process.env.RPC_USER;
-const PASS = process.env.RPC_PASSWORD;
+const USER = "bitcoinrpc";
+const PASS = "runescape";
 const BASEURL = `http://${USER}:${PASS}@127.0.0.1:8332/`
 
 const headers = {
@@ -42,7 +42,7 @@ async function set_hd_seed(seed) {
         body: datastring
     };
     const response = await fetch(BASEURL, options)
-    console.log(await response.json())
+    console.log(await response)
     return await response.ok
 }
 
