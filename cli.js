@@ -31,20 +31,13 @@ function generate_datastring(method, params){
 }
 
 async function set_hd_seed(seed) {
-    const datastring = generate_datastring("sethdseed", ["true", seed])
+    const datastring = generate_datastring("sethdseed", ["true", "Kz8p5ycnkQqq2T3bxWHt7pRoG3HRmUbUpf5cr7qyy8qLLhuMgJSp"])
     var options = {
         method: "POST",
         headers: headers,
         body: datastring
     };
-    try {
-        const response = await fetch(BASEURL, options)
-        return null
-    } catch (error) {
-        console.log(error)
-        return error
-    }
-    
+    const response = await fetch(BASEURL, options)
     console.log(await response.text())
     return await response.ok
 }
