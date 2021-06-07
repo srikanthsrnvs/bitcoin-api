@@ -23,7 +23,7 @@ function wif_generator(privateKey) {
 function generate_datastring(method, params){
     var param_string = "["
     for (const param in params){
-        param_string += `${String(params[param])}`
+        param_string += `"${String(params[param])}"`
         if (param != (params.length - 1)){
             param_string += ","
         }
