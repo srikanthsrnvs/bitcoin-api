@@ -22,10 +22,10 @@ router.post("/create_new_wallet", async(req, res) => {
 
   console.log("SetHDSeed response: ", set_seed)
 
-  if (!set_seed){
+  if (!set_seed.error){
     res.status(200).send()
   }else{
-    res.status(400).send({"error": set_seed})
+    res.status(400).send(set_seed)
   }
 })
 

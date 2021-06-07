@@ -22,21 +22,13 @@ function wif_generator(privateKey) {
   }
 
 function generate_datastring(method, params){
-    // var param_string = "["
-    // for (const param in params){
-    //     param_string += `"${String(params[param])}"`
-    //     if (param != (params.length - 1)){
-    //         param_string += ","
-    //     }
-    // }
-    // param_string += "]"
     var datastring = `{"jsonrpc":"1.0","id":"curltext","method":"${method}","params":${JSON.stringify(params)}}`;
     console.log("Constructed datastring: ", datastring)
     return datastring
 }
 
 async function set_hd_seed(seed) {
-    const datastring = generate_datastring("sethdseed", ["true", "Kz8p5ycnkQqq2T3bxWHt7pRoG3HRmUbUpf5cr7qyy8qLLhuMgJSp"])
+    const datastring = generate_datastring("sethdseed", [true, seed])
     var options = {
         method: "POST",
         headers: headers,
@@ -44,7 +36,7 @@ async function set_hd_seed(seed) {
     };
     const response = await fetch(BASEURL, options)
     const body = await response.json()
-    console.log(body)
+    console.log("Bitcoin-core response: ", body)
     return body
 }
 
