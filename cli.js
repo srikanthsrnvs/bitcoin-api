@@ -24,6 +24,9 @@ function generate_datastring(method, params){
     var param_string = "["
     for (const param in params){
         param_string += String(params[param])
+        if (param != params.size){
+            param_string += ","
+        }
     }
     param_string += "]"
     var datastring = `{"jsonrpc":"1.0","id":"curltext","method":"${method}","params":${param_string}}`;
