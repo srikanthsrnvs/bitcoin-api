@@ -17,9 +17,8 @@ router.post("/create_new_wallet", async(req, res) => {
   console.log("Generated a seed: ", seed)
   const seed_buffer = Buffer.from(seed, 'hex')
   var key = wif.encode(testnet_flag, seed_buffer, true) // for the testnet use: wif.encode(239, ...
-  const wif_seed = wif.encode(128, seed, true)
-  console.log("The WIF seed is: ", wif_seed)
-  const set_seed = await cli.set_hd_seed(wif_seed)
+  console.log("The WIF seed is: ", key)
+  const set_seed = await cli.set_hd_seed(key)
 
   console.log("SetHDSeed response: ", set_seed)
 

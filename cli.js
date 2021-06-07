@@ -10,6 +10,16 @@ const headers = {
   "content-type": "text/plain;"
 };
 
+function wif_generator(privateKey) {
+    const step1 = Buffer.from("80" + privateKey, 'hex');
+    const step2 = sha256(step1);
+    const step3 = sha256(Buffer.from(step2, 'hex'));
+    const checksum = step3.substring(0, 8);
+    const step4 = step1.toString('hex') + checksum;
+    const privateKeyWIF = base58.encode(Buffer.from(step4, 'hex'));
+    return privateKeyWIF;
+  }
+
 function generate_datastring(method, params){
     var param_string = "["
     for (const param in params){
@@ -32,3 +42,4 @@ async function set_hd_seed(seed) {
 }
 
 exports.set_hd_seed = set_hd_seed;
+exports.wif_generator = wif_generator;
