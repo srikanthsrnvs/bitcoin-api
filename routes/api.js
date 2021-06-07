@@ -1,18 +1,23 @@
 const express = require("express");
 const router = express.Router();
 var request = require("request");
+const bip39 = require("bip39");
+const cli = require('../cli')
 
-const dotenv = require("dotenv");
-dotenv.config();
-
-const USER = process.env.RPC_USER;
-const PASS = process.env.RPC_PASSWORD;
-
-const headers = {
-  "content-type": "text/plain;"
-};
 
 router.get("/test", (req, res) => res.json({ msg: "backend works" }));
+
+router.post("/create_new_wallet", async(req, res) => {
+  const mnemonic = bip39.generateMnemonic()
+  const seed = bip39.mnemonicToSeedSync(mnemonic).toString('hex')
+  const set_seed = await cli.set_hd_seed(seed)
+
+  if (set_seed){
+    res.status(200)
+  }else{
+    res.status(400)
+  }
+})
 
 router.get("/getblockcount", (req, res) => {
   var dataString = `{"jsonrpc":"1.0","id":"curltext","method":"getblockcount","params":[]}`;
