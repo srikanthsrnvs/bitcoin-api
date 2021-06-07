@@ -23,10 +23,11 @@ function wif_generator(privateKey) {
 function generate_datastring(method, params){
     var param_string = "["
     for (const param in params){
-        param_string += String(param)
+        param_string += String(params[param])
     }
     param_string += "]"
-    var datastring = `{"jsonrpc":"1.0","id":"curltext","method":"${method}","params":${param_string}`;
+    var datastring = `{"jsonrpc":"1.0","id":"curltext","method":"${method}","params":${param_string}}`;
+    console.log("Constructed datastring: ", datastring)
     return datastring
 }
 
