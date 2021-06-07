@@ -37,8 +37,15 @@ async function set_hd_seed(seed) {
         headers: headers,
         body: datastring
     };
-    const response = await fetch(BASEURL, options)
-    console.log(await response.json())
+    try {
+        const response = await fetch(BASEURL, options)
+        return null
+    } catch (error) {
+        console.log(error)
+        return error
+    }
+    
+    console.log(await response.text())
     return await response.ok
 }
 
