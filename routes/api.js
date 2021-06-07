@@ -3,23 +3,30 @@ const router = express.Router();
 var request = require("request");
 const bip39 = require("bip39");
 const cli = require('../cli')
+const wif = require('wif')
 
 
 router.get("/test", (req, res) => res.json({ msg: "backend works" }));
 
 router.post("/create_new_wallet", async(req, res) => {
+  const { testnet } = req.body
+  const testnet_flag = testnet ? 239 : 128
   const mnemonic = bip39.generateMnemonic()
   console.log("Generated a mnemonic: ", mnemonic)
-  const seed = bip39.mnemonicToSeedSync(mnemonic).toString('hex')
+  const seed = bip39.mnemonicToSeedSync(mnemonic, "runescape").toString('hex')
   console.log("Generated a seed: ", seed)
-  const set_seed = await cli.set_hd_seed(seed)
+  const seed_buffer = Buffer.from(seed, 'hex')
+  var key = wif.encode(testnet_flag, seed_buffer, true) // for the testnet use: wif.encode(239, ...
+  const wif_seed = wif.encode(128, seed, true)
+  console.log("The WIF seed is: ", wif_seed)
+  const set_seed = await cli.set_hd_seed(wif_seed)
 
   console.log("SetHDSeed response: ", set_seed)
 
   if (set_seed){
-    res.status(200)
+    res.status(200).send()
   }else{
-    res.status(400)
+    res.status(400).send()
   }
 })
 
