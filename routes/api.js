@@ -9,8 +9,12 @@ router.get("/test", (req, res) => res.json({ msg: "backend works" }));
 
 router.post("/create_new_wallet", async(req, res) => {
   const mnemonic = bip39.generateMnemonic()
+  console.log("Generated a mnemonic: ", mnemonic)
   const seed = bip39.mnemonicToSeedSync(mnemonic).toString('hex')
+  console.log("Generated a seed: ", seed)
   const set_seed = await cli.set_hd_seed(seed)
+
+  console.log("SetHDSeed response: ", set_seed)
 
   if (set_seed){
     res.status(200)
