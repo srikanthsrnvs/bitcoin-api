@@ -23,7 +23,7 @@ function wif_generator(privateKey) {
 function generate_datastring(method, params){
     var param_string = "["
     for (const param in params){
-        param_string += String(params[param])
+        param_string += `${String(params[param])}`
         if (param != (params.length - 1)){
             param_string += ","
         }
@@ -42,8 +42,8 @@ async function set_hd_seed(seed) {
         body: datastring
     };
     const response = await fetch(BASEURL, options)
-    console.log(await response)
-    return await response.ok
+    console.log(await response.json())
+    return (! await response.json())
 }
 
 exports.set_hd_seed = set_hd_seed;
