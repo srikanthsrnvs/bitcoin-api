@@ -1,29 +1,36 @@
 const express = require("express");
 const router = express.Router();
-var request = require("request");
-const bip39 = require("bip39");
-const cli = require('../cli')
-const wif = require('wif')
-
 
 router.get("/test", (req, res) => res.json({ msg: "backend works" }));
 
 router.post("/create_new_wallet", async(req, res) => {
-  const { testnet } = req.body
+  const { testnet, wallet_name } = req.body
+
+  
+
   const testnet_flag = testnet ? 239 : 128
+  print("Using testnet?: ", testnet, testnet_flag)
   const mnemonic = bip39.generateMnemonic()
   console.log("Generated a mnemonic: ", mnemonic)
-  const seed = bip39.mnemonicToSeedSync(mnemonic, "runescape").toString('hex')
+  const seed = bip39.mnemonicToSeedSync(mnemonic).toString('hex')
   console.log("Generated a seed: ", seed)
   const seed_buffer = Buffer.from(seed, 'hex')
   var key = wif.encode(testnet_flag, seed_buffer, true) // for the testnet use: wif.encode(239, ...
   console.log("The WIF seed is: ", key)
-  const set_seed = await cli.set_hd_seed(key)
+  const wallet_creation_response = await cli.create_new_wallet(wallet_name)
+  const set_seed = await cli.set_hd_seed(key, wallet_name)
 
   console.log("SetHDSeed response: ", set_seed)
 
+  const address = await cli.create_new_address(wallet_name);
+  console.log("Constructed a new receiving address: ", address)
+
   if (!set_seed.error){
-    res.status(200).send()
+    res.status(200).send({
+      "address": address,
+      "wif": key,
+      "mnemonic": mnemonic
+    })
   }else{
     res.status(400).send(set_seed)
   }

@@ -16,7 +16,8 @@
     "express": "^4.17.1",
     "node-fetch": "^2.6.1",
     "request": "^2.88.0",
-    "wif": "^2.0.6"
+    "wif": "^2.0.6",
+    "bcoin": "git+https://github.com/bcoin-org/bcoin.git#semver:~2.0.0"
   },
   "devDependencies": {
     "nodemon": "^1.19.1"
